@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>
+		Custom initializer for view controller
+	</title>
+</head>
+<body>
+	
+
+<p>Ever felt like the initializer options for UIViewController provided by UIKit are not enough for you. Or maybe you think you could customize the UIViewController better by initializing it with your model (Read dependency injection via initializer). Here is a basic approach to enable you to do just that.
+</p>
+<div style="display: block;">
+<blockquote>import UIKit
+<pre>class ViewController: UIViewController {
+  var rootView: ViewControllerView!
+  var text: String
+
+  init(text: String) {
+    self.text = text
+    super.init(nibName: nil, bundle: nil)
+  }
+
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    // Do any additional setup after loading the view, typically from a nib.
+    rootView.textLabel.text = text
+    rootView.textLabel.textColor = UIColor.blue
+  }
+
+  override func loadView() {
+    super.loadView()
+    view = UINib(nibName: "ViewControllerView", bundle: nil).instantiate(withOwner: self, options: nil).first as! ViewControllerView
+    rootView = view as! ViewControllerView
+  }
+} </pre>
+</blockquote>
+</div>
+</body>
+</html>
